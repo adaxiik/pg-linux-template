@@ -19,3 +19,12 @@ I am not the author of most of the source files and I certainly do not agree wit
 - intel embree
 
 and imgui, but it's already included :)
+
+
+# usage
+
+Take a look [here](build.sh)
+
+```sh
+./build.sh run
+```
