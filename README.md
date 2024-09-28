@@ -4,6 +4,8 @@ PG1 template compatible with linux (and maybe osx)
 
 I am not the author of most of the source files and I certainly do not agree with the code style of this project. I left the original source codes almost untouched, including their undefined behavior and memory leaks, to make it as faithful as possible to the original :)
 
+You may find original template somewhere [here](http://mrl.cs.vsb.cz/people/fabian/pg1_course.html).
+
 # changes
 
 - dx11 was replaced with SDL2 and opengl
