@@ -53,7 +53,10 @@ protected:
     int width() const;
     int height() const;
 
+    double render_fps() const;
+
     bool vsync_{ true };
+    double delta_time_{ 0.0f };
 
 private:
     int width_{ 640 };

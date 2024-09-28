@@ -128,17 +128,15 @@ int SimpleGui::Cleanup()
 
 void SimpleGui::Producer()
 {
-    float t = 0.0f; // time
-	auto t0 = std::chrono::high_resolution_clock::now();
+    double t = 0.0f; // time
+	auto last_time = std::chrono::steady_clock::now();
 
     while (!producer_done_.load(std::memory_order_acquire))
     {
-        auto t1 = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<float> dt = t1 - t0;
-		t += dt.count();
-		t0 = t1;
-
-        std::cout << "Producer: " << t << std::endl;
+        auto current_time = std::chrono::steady_clock::now();
+        delta_time_ = std::chrono::duration<double>(current_time - last_time).count();
+        last_time = current_time;
+        t += delta_time_;
 
 
         for (int y = 0; y < height_; ++y)
@@ -159,9 +157,6 @@ void SimpleGui::Producer()
             pixelDataBuffers.dataReady = true;
         }
 
-        // pixelDataBuffers.cv.notify_one();
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }
 
@@ -169,9 +164,6 @@ int SimpleGui::MainLoop()
 {
     SDL_Event event;
     bool done = false;
-
-    // std::thread producer_thread( &SimpleGuiDX11::Producer, this );
-    // BOOL r = SetThreadPriority( producer_thread.native_handle(), THREAD_PRIORITY_BELOW_NORMAL );
 
     std::thread producer_thread( &SimpleGui::Producer, this );
     GLuint texture = create_texture(width_, height_);
@@ -190,8 +182,6 @@ int SimpleGui::MainLoop()
 
             // process other events here
         }
-
-        std::cout << "MainLoop" << std::endl;
 
         {
             std::unique_lock<std::mutex> lock(pixelDataBuffers.mtx);
@@ -293,4 +283,9 @@ int SimpleGui::width() const
 int SimpleGui::height() const
 {
     return height_;
+}
+
+double SimpleGui::render_fps() const
+{
+    return 1.0 / delta_time_;
 }

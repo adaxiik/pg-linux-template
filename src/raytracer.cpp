@@ -107,7 +107,23 @@ void Raytracer::LoadScene( const std::string file_name )
 Color4f Raytracer::get_pixel( const int x, const int y, const float t )
 {
     // TODO generate primary ray and perform ray cast on the scene
-    return Color4f{ 1.0f, 0.0f, 1.0f, 1.0f };
+    // return Color4f{ 1.0f, 0.0f, 1.0f, 1.0f };
+
+    float cicrcle_x = std::sin( t ) * 100;
+    float cicrcle_y = std::cos( t ) * 100;
+
+    float center_x = width() / 2.0f;
+    float center_y = height() / 2.0f;
+
+    float dx = x - center_x - cicrcle_x;
+    float dy = y - center_y - cicrcle_y;
+
+    float radius = 100.0f;
+
+    if (dx * dx + dy * dy < radius * radius)
+        return Color4f{ 1.0f, 0.0f, 1.0f, 1.0f };
+
+    return Color4f{ 0.0f, 0.0f, 0.0f, 1.0f };
 }
 
 int Raytracer::Ui()
@@ -135,7 +151,8 @@ int Raytracer::Ui()
     ImGui::SameLine();
     ImGui::Text( "counter = %d", counter );
 
-    ImGui::Text( "Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate );
+    ImGui::Text( "Application average %.3f ms/frame (%.1f FPS)", ImGui::GetIO().DeltaTime, ImGui::GetIO().Framerate );
+    ImGui::Text("Render %.3f ms/frame (%.1f FPS)", delta_time_, render_fps()) ;
     ImGui::End();
 
     // 3. Show another simple window.
