@@ -8,6 +8,7 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_video.h>
 #include <iostream>
+#include <mutex>
 #include <thread>
 
 SimpleGui::SimpleGui( const int width, const int height): pixelDataBuffers(width, height)
@@ -152,7 +153,7 @@ void SimpleGui::Producer()
         }
 
         {
-            std::lock_guard<std::mutex> lock(pixelDataBuffers.mtx);
+            std::scoped_lock<std::mutex> lock(pixelDataBuffers.mtx);
             std::swap(pixelDataBuffers.currentBuffer, pixelDataBuffers.readyBuffer);
             pixelDataBuffers.dataReady = true;
         }
@@ -184,7 +185,7 @@ int SimpleGui::MainLoop()
         }
 
         {
-            std::unique_lock<std::mutex> lock(pixelDataBuffers.mtx);
+            std::scoped_lock<std::mutex> lock(pixelDataBuffers.mtx);
             if (pixelDataBuffers.dataReady)
             {
                 update_texture(texture, width_, height_, pixelDataBuffers.readyBuffer->data());
