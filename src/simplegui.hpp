@@ -19,7 +19,6 @@ struct PixelDataBuffers {
     std::vector<float>* readyBuffer;      // Buffer ready for rendering
 
     std::mutex mtx;
-    std::condition_variable cv;
     bool dataReady;
 
     PixelDataBuffers(int width, int height)
