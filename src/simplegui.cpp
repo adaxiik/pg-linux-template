@@ -206,7 +206,6 @@ int SimpleGui::MainLoop()
 
         ImGui::Render();
 
-        glViewport(0, 0, width_, height_);
         glClearColor(0.1f, 0.1f, 0.1f, 1.00f);
         glClear(GL_COLOR_BUFFER_BIT);
 
