@@ -24,5 +24,9 @@ RTCRay Camera::GenerateRay( const float x_i, const float y_i ) const
     // TODO fill in ray structure and compute ray direction
     // ray.org_x = ...
 
+
+    // if you cant see anything, try setting ray.mask to 0xFFFFFFFF instead of 0
+    // ray.mask = 0xFFFFFFFF;
+
     return ray;
 }
